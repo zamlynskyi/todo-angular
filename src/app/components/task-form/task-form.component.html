@@ -1,0 +1,40 @@
+
+<form #taskForm="ngForm" (ngSubmit)="addTask(taskForm)" novalidate class="task-form">
+  <label>
+    Назва завдання
+    <input name="text" [(ngModel)]="text" required minlength="3" #textCtrl="ngModel" />
+    <div class="error" *ngIf="textCtrl.invalid && textCtrl.touched">
+      Назва обов’язкова (мін. 3 символи)
+    </div>
+  </label>
+
+  <label>
+    Дата завершення
+    <input name="deadline" [(ngModel)]="deadline" type="date" />
+  </label>
+
+  <label>
+    Опис завдання
+    <input name="description" [(ngModel)]="description" />
+  </label>
+
+  <label>
+    Пріоритет
+    <select name="priority" [(ngModel)]="priority">
+      <option value="високий">Високий</option>
+      <option value="середній">Середній</option>
+      <option value="низький">Низький</option>
+    </select>
+  </label>
+
+  <label>
+    Категорія
+    <select name="category" [(ngModel)]="category">
+      <option value="робота">Робота</option>
+      <option value="особисті">Особисті</option>
+      <option value="навчання">Навчання</option>
+    </select>
+  </label>
+
+  <button type="submit" [disabled]="taskForm.invalid">Додати</button>
+</form>

@@ -1,0 +1,69 @@
+<div class="task-controls">
+  <label>
+    Фільтр завдань:
+    <select [(ngModel)]="filter">
+      <option value="all">Усі</option>
+      <option value="completed">Виконані</option>
+      <option value="pending">Невиконані</option>
+    </select>
+  </label>
+  <button (click)="clearAll()">Очистити все</button>
+</div>
+
+<ul cdkDropList (cdkDropListDropped)="drop($event)">
+  <li
+    *ngFor="let task of getFilteredTasks(); let i = index"
+    cdkDrag
+    [class.completed]="task.completed"
+    class="task-item"
+  >
+    <div *ngIf="editIndex !== i">
+      <label>
+        <input
+          type="checkbox"
+          [checked]="task.completed"
+          (change)="toggleComplete(i)"
+          title="Позначити як виконане"
+        />
+        Позначити як виконане
+      </label>
+      <div class="task-content">
+        <span>{{ task.text }} ({{ task.category }})</span>
+        <small>{{ task.deadline }}</small>
+      </div>
+      <button (click)="startEdit(i)">✏️</button>
+      <button (click)="deleteTask(i)">🗑</button>
+    </div>
+    <div *ngIf="editIndex === i" class="edit-form">
+      <input
+        [(ngModel)]="editedTask.text"
+        placeholder="Назва"
+        required
+        title="Назва завдання"
+      />
+      <input
+        [(ngModel)]="editedTask.deadline"
+        type="date"
+        placeholder="Дедлайн"
+        title="Дедлайн"
+      />
+      <input
+        [(ngModel)]="editedTask.description"
+        placeholder="Опис"
+        title="Опис завдання"
+      />
+      <select [(ngModel)]="editedTask.priority" title="Пріоритет">
+        <option value="високий">Високий</option>
+        <option value="середній">Середній</option>
+        <option value="низький">Низький</option>
+      </select>
+      <select [(ngModel)]="editedTask.category" title="Категорія">
+        <option value="робота">Робота</option>
+        <option value="особисті">Особисті</option>
+        <option value="навчання">Навчання</option>
+      </select>
+      <button (click)="saveEdit()">💾</button>
+      <button (click)="cancelEdit()">❌</button>
+    </div>
+  </li>
+</ul>
